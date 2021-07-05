@@ -10,5 +10,6 @@
 		<property name="show_sql">true</property>
 		<property name="hibernate.hbm2ddl.auto">create</property>
 		<mapping resource="hibernate/employee.hbm.xml" />
+		<mapping class="com.hibernate.demo.entity.User" />
 	</session-factory>
 </hibernate-configuration>

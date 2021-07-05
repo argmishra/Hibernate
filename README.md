@@ -39,3 +39,5 @@ limit the number of results returned by the query, and finally to execute the qu
 **6. Criteria** - Criteria objects are used to create and execute object oriented criteria queries to retrieve objects.
 
 ## Code Samples
+1. Using XML
+2. Using Annotation
