@@ -20,7 +20,7 @@ An ORM tool simplifies data creation, data manipulation and data access.
 It represents a configuration or properties file required by the Hibernate. It provides two keys components −
 
 * Database Connection – This is handled through one or more configuration files supported by Hibernate. These files are hibernate.properties and hibernate.cfg.xml.
-* Local Variable Array – This component creates the connection between the Java classes and database tables.
+* Class Mapping Setup – This component creates the connection between the Java classes and database tables.
 
 **2. SessionFactory** - The SessionFactory is a factory of session and client of ConnectionProvider. It holds second level cache (optional) of data. This provides factory method to get
 the object of Session. It is a heavyweight object and usually created during application start up and kept for later use. You would need one SessionFactory object per database
