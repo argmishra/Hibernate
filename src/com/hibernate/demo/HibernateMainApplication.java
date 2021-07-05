@@ -2,11 +2,14 @@ package com.hibernate.demo;
 
 import java.time.Instant;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.criterion.Projections;
+import org.hibernate.query.Query;
 
 import com.hibernate.demo.entity.Employee;
 import com.hibernate.demo.entity.User;
@@ -34,7 +37,24 @@ public class HibernateMainApplication {
 		app.saveByTablePerHierarchy();
 		app.saveByTablePerConcreteClass();
 		app.saveByTablePerSubClass();
+		app.HQLDemo();
+		app.HCQLDemo();
 		app.closeConnection();
+	}
+
+	public void HQLDemo() {
+		Query<?> query = session.createQuery("from User");
+		query.list().forEach(user -> {
+			System.out.println("HQL = " + user);
+		});
+	}
+
+	public void HCQLDemo() {
+		Criteria criteria = session.createCriteria(Employee.class);
+		criteria.setProjection(Projections.property("firstName"));
+		criteria.list().forEach(user -> {
+			System.out.println("HCQL = " + user);
+		});
 	}
 
 	public void saveByTablePerSubClass() {
@@ -95,7 +115,6 @@ public class HibernateMainApplication {
 
 	public void closeConnection() {
 		transaction.commit();
-		System.out.println("Successfully Saved");
 		factory.close();
 		session.close();
 	}
