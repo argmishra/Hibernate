@@ -11,5 +11,8 @@
 		<property name="hibernate.hbm2ddl.auto">create</property>
 		<mapping resource="hibernate/employee.hbm.xml" />
 		<mapping class="com.hibernate.demo.entity.User" />
+		<mapping class="com.hibernate.demo.entity.tph.TotalSalary" />
+		<mapping class="com.hibernate.demo.entity.tph.BasicSalary" />
+		<mapping class="com.hibernate.demo.entity.tph.BonusSalary" />
 	</session-factory>
 </hibernate-configuration>

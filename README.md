@@ -38,6 +38,14 @@ limit the number of results returned by the query, and finally to execute the qu
 
 **6. Criteria** - Criteria objects are used to create and execute object oriented criteria queries to retrieve objects.
 
+## Inheritance Mappings
+**1. Table Per Hierarchy** - Single table is required to map the whole hierarchy, an extra column (known as discriminator column) is added to identify the class.
+**2. Table Per Concrete Class** - Tables are created as per class. But duplicate column is added in subclass tables.
+**3. Table Per Sub Class** - Tables are created as per class but related by foreign key. So there are no duplicate columns.
+
 ## Code Samples
 1. Using XML
 2. Using Annotation
+3. Table Per Hierarchy Mapping
+4. Table Per Concrete Class Mapping
+5. Table Per Sub Class Mapping
