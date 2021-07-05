@@ -8,6 +8,9 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import com.hibernate.demo.entity.Employee;
 import com.hibernate.demo.entity.User;
+import com.hibernate.demo.entity.tpcc.Bollywood;
+import com.hibernate.demo.entity.tpcc.Hollywood;
+import com.hibernate.demo.entity.tpcc.Movie;
 import com.hibernate.demo.entity.tph.BasicSalary;
 import com.hibernate.demo.entity.tph.BonusSalary;
 import com.hibernate.demo.entity.tph.TotalSalary;
@@ -24,7 +27,18 @@ public class HibernateMainApplication {
 		app.saveByXML();
 		app.saveByAnnotation();
 		app.saveByTablePerHierarchy();
+		app.saveByTablePerConcreteClass();
 		app.closeConnection();
+	}
+
+	public void saveByTablePerConcreteClass() {
+		Movie movie = new Movie();
+		movie.setName("Transformer");
+		Hollywood hollywood = Hollywood.builder().hero("Tom").build();
+		Bollywood bollywood = Bollywood.builder().hero("Girish").build();
+		session.persist(movie);
+		session.persist(hollywood);
+		session.persist(bollywood);
 	}
 
 	public void saveByTablePerHierarchy() {

@@ -14,5 +14,8 @@
 		<mapping class="com.hibernate.demo.entity.tph.TotalSalary" />
 		<mapping class="com.hibernate.demo.entity.tph.BasicSalary" />
 		<mapping class="com.hibernate.demo.entity.tph.BonusSalary" />
+		<mapping class="com.hibernate.demo.entity.tpcc.Movie" />
+		<mapping class="com.hibernate.demo.entity.tpcc.Hollywood" />
+		<mapping class="com.hibernate.demo.entity.tpcc.Bollywood" />
 	</session-factory>
 </hibernate-configuration>
