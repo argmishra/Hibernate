@@ -1,4 +1,4 @@
-package com.hibernate.demo.entity.tpcc;
+package com.hibernate.demo.entity.tpsc;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,21 +9,19 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Entity
-@Table(name = "movie")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Movie {
+@Table(name = "vehicle")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Vehicle {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
-	@Column(name = "name")
-	private String name;
+	@Column(name = "model")
+	private String model;
 
 }

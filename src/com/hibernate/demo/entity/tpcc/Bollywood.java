@@ -8,9 +8,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Builder
+@Getter
+@Setter
 @Entity
 @Table(name = "bollywood")
 @AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "id")),

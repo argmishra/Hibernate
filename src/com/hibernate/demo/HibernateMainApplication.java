@@ -1,5 +1,7 @@
 package com.hibernate.demo;
 
+import java.time.Instant;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,6 +16,9 @@ import com.hibernate.demo.entity.tpcc.Movie;
 import com.hibernate.demo.entity.tph.BasicSalary;
 import com.hibernate.demo.entity.tph.BonusSalary;
 import com.hibernate.demo.entity.tph.TotalSalary;
+import com.hibernate.demo.entity.tpsc.Exterior;
+import com.hibernate.demo.entity.tpsc.Interior;
+import com.hibernate.demo.entity.tpsc.Vehicle;
 
 public class HibernateMainApplication {
 
@@ -28,14 +33,33 @@ public class HibernateMainApplication {
 		app.saveByAnnotation();
 		app.saveByTablePerHierarchy();
 		app.saveByTablePerConcreteClass();
+		app.saveByTablePerSubClass();
 		app.closeConnection();
+	}
+
+	public void saveByTablePerSubClass() {
+		Vehicle vehicle = new Vehicle();
+		vehicle.setModel("Getz");
+		Interior interior1 = Interior.builder().rating("4").model("Swift").build();
+		Interior interior2 = Interior.builder().rating("4.5").model("Honda").build();
+		Exterior exterior = Exterior.builder().rating("3.5").model("Alto").build();
+		session.persist(vehicle);
+		session.persist(interior1);
+		session.persist(exterior);
+		session.persist(interior2);
 	}
 
 	public void saveByTablePerConcreteClass() {
 		Movie movie = new Movie();
 		movie.setName("Transformer");
-		Hollywood hollywood = Hollywood.builder().hero("Tom").build();
-		Bollywood bollywood = Bollywood.builder().hero("Girish").build();
+		Hollywood hollywood = new Hollywood();
+		hollywood.setName("Mission Impossible");
+		hollywood.setHero("Tom");
+		hollywood.setDate(Instant.now());
+		Bollywood bollywood = new Bollywood();
+		bollywood.setName("Loveshhuda");
+		bollywood.setHero("Girish");
+		bollywood.setDate(Instant.now());
 		session.persist(movie);
 		session.persist(hollywood);
 		session.persist(bollywood);
