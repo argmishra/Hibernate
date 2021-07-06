@@ -11,6 +11,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.criterion.Projections;
 import org.hibernate.query.Query;
 
+import com.hibernate.demo.entity.Country;
 import com.hibernate.demo.entity.Employee;
 import com.hibernate.demo.entity.User;
 import com.hibernate.demo.entity.tpcc.Bollywood;
@@ -28,6 +29,8 @@ public class HibernateMainApplication {
 	private SessionFactory factory;
 	private Session session;
 	private Transaction transaction;
+	private Session anotherSession;
+	private Transaction anotherTransaction;
 
 	public static void main(String[] args) {
 		HibernateMainApplication app = new HibernateMainApplication();
@@ -39,13 +42,27 @@ public class HibernateMainApplication {
 		app.saveByTablePerSubClass();
 		app.HQLDemo();
 		app.HCQLDemo();
+		app.cacheDemo();
 		app.closeConnection();
+	}
+
+	public void cacheDemo() {
+		System.out.println("First Time Result = " + getResult(session).getName());
+		System.out.println("First Level Cache Result = " + getResult(session).getName());
+
+		this.openAnotherConnection();
+		System.out.println("Second Level Cache Result = " + getResult(anotherSession).getName());
+		this.closeAnotherConnection();
+	}
+
+	private static Country getResult(Session session) {
+		return session.load(Country.class, 1L);
 	}
 
 	public void HQLDemo() {
 		Query<?> query = session.createQuery("from User");
 		query.list().forEach(user -> {
-			System.out.println("HQL = " + user);
+			System.out.println("HQL Demo = " + user);
 		});
 	}
 
@@ -53,7 +70,7 @@ public class HibernateMainApplication {
 		Criteria criteria = session.createCriteria(Employee.class);
 		criteria.setProjection(Projections.property("firstName"));
 		criteria.list().forEach(user -> {
-			System.out.println("HCQL = " + user);
+			System.out.println("HCQL Demo = " + user);
 		});
 	}
 
@@ -103,6 +120,9 @@ public class HibernateMainApplication {
 	public void saveByAnnotation() {
 		User user = User.builder().firstName("Optimus").lastName("Prime").build();
 		session.save(user);
+
+		Country country = Country.builder().name("Ireland").population("10000").build();
+		session.save(country);
 	}
 
 	public void openConnection() {
@@ -117,6 +137,16 @@ public class HibernateMainApplication {
 		transaction.commit();
 		session.close();
 		factory.close();
+	}
+
+	public void openAnotherConnection() {
+		anotherSession = factory.openSession();
+		anotherTransaction = anotherSession.beginTransaction();
+	}
+
+	public void closeAnotherConnection() {
+		anotherTransaction.commit();
+		anotherSession.close();
 	}
 
 }
