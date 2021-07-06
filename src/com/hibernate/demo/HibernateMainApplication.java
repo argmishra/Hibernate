@@ -115,8 +115,8 @@ public class HibernateMainApplication {
 
 	public void closeConnection() {
 		transaction.commit();
-		factory.close();
 		session.close();
+		factory.close();
 	}
 
 }

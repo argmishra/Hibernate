@@ -32,6 +32,13 @@ It holds a first-level cache (mandatory) of data. This interface provides method
 
 **6. Criteria** - Criteria objects are used to create and execute object oriented criteria queries to retrieve objects.
 
+## Hibernate LifeCycle
+**1. Transient State** -This is the initial state of an object. Once we create an instance of POJO class, then the object entered in the transient state and object is not associated with the Session. So, the transient state is not related to any database. The transient objects exist in the heap memory. They are independent of Hibernate.
+
+**2. Persistent State** - As soon as the object associated with the Session, it entered in the persistent state. Hence, we can say that an object is in the persistence state when we save or persist it. Here, each object represents the row of the database table.
+
+**3. Detached State** - Once we either close the session or clear its cache, then the object entered into the detached state. As an object is no more associated with the Session, modifications in the data don't affect any changes in the database. However, the detached object still has a representation in the database. If we want to persist the changes made to a detached object, it is required to reattach the application to a valid Hibernate session. To associate the detached object with the new hibernate session, use any of these methods - load(), merge(), refresh(), update() or save() on a new session with the reference of the detached object.
+
 ## Inheritance Mappings
 **1. Table Per Hierarchy** - Single table is required to map the whole hierarchy, an extra column (known as discriminator column) is added to identify the class.
 
@@ -45,3 +52,5 @@ It holds a first-level cache (mandatory) of data. This interface provides method
 3. Table Per Hierarchy Mapping
 4. Table Per Concrete Class Mapping
 5. Table Per Sub Class Mapping
+6. Hibernate Query Languages
+7. Caching

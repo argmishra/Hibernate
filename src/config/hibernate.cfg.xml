@@ -20,6 +20,5 @@
 		<mapping class="com.hibernate.demo.entity.tpsc.Vehicle" />
 		<mapping class="com.hibernate.demo.entity.tpsc.Interior" />
 		<mapping class="com.hibernate.demo.entity.tpsc.Exterior" />
-
 	</session-factory>
 </hibernate-configuration>
