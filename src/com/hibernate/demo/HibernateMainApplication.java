@@ -1,6 +1,9 @@
 package com.hibernate.demo;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -14,6 +17,11 @@ import org.hibernate.query.Query;
 import com.hibernate.demo.entity.Country;
 import com.hibernate.demo.entity.Employee;
 import com.hibernate.demo.entity.User;
+import com.hibernate.demo.entity.collection.Fruit;
+import com.hibernate.demo.entity.collection.Password;
+import com.hibernate.demo.entity.collection.Vegetable;
+import com.hibernate.demo.entity.component.Hardware;
+import com.hibernate.demo.entity.component.Laptop;
 import com.hibernate.demo.entity.tpcc.Bollywood;
 import com.hibernate.demo.entity.tpcc.Hollywood;
 import com.hibernate.demo.entity.tpcc.Movie;
@@ -35,6 +43,11 @@ public class HibernateMainApplication {
 	public static void main(String[] args) {
 		HibernateMainApplication app = new HibernateMainApplication();
 		app.openConnection();
+		// app.all(app);
+		app.closeConnection();
+	}
+
+	public void all(HibernateMainApplication app) {
 		app.saveByXML();
 		app.saveByAnnotation();
 		app.saveByTablePerHierarchy();
@@ -43,7 +56,84 @@ public class HibernateMainApplication {
 		app.HQLDemo();
 		app.HCQLDemo();
 		app.cacheDemo();
-		app.closeConnection();
+		app.collectionDemo();
+		app.componentDemo();
+	}
+
+	public void collectionDemo() {
+		// List
+		Fruit fruit1 = new Fruit();
+		fruit1.setName("Mango");
+		fruit1.setLocations(List.of("Mumbai", "Gujrat"));
+		session.save(fruit1);
+
+		Fruit fruit2 = new Fruit();
+		fruit2.setName("Coconut");
+		fruit2.setLocations(List.of("Kerla", "AP"));
+		session.save(fruit2);
+
+		// Set
+		Vegetable vegetable1 = new Vegetable();
+		vegetable1.setName("Capsicum");
+		vegetable1.setColours(Set.of("Red", "Yellow", "Green"));
+		session.save(vegetable1);
+
+		Vegetable vegetable2 = new Vegetable();
+		vegetable2.setName("Onion");
+		vegetable2.setColours(Set.of("Red", "Green"));
+		session.save(vegetable2);
+
+		// Map
+		Password password1 = new Password();
+		password1.setWebsite("google");
+		password1.setHint(Map.of("mail", "argmishra.ece@Gmail.com", "number", "1234"));
+		session.save(password1);
+
+		Password password2 = new Password();
+		password2.setWebsite("facebook");
+		password2.setHint(Map.of("user", "argmishra", "number", "1234"));
+		session.save(password2);
+	}
+
+	public void componentDemo() {
+		// Component
+		Hardware hardware1 = new Hardware();
+		hardware1.setName("CPU");
+		hardware1.setWorking(true);
+
+		Hardware hardware2 = new Hardware();
+		hardware2.setName("RAM");
+		hardware2.setWorking(true);
+
+		Hardware hardware3 = new Hardware();
+		hardware3.setName("RAM");
+		hardware3.setWorking(false);
+
+		Hardware hardware4 = new Hardware();
+		hardware4.setName("Speaker");
+		hardware4.setWorking(false);
+
+		Laptop laptop1 = new Laptop();
+		laptop1.setBrand("HP");
+		laptop1.setHardware(hardware1);
+
+		Laptop laptop2 = new Laptop();
+		laptop2.setBrand("Dell");
+		laptop2.setHardware(hardware2);
+
+		Laptop laptop3 = new Laptop();
+		laptop3.setBrand("Lenovo");
+		laptop3.setHardware(hardware3);
+
+		Laptop laptop4 = new Laptop();
+		laptop4.setBrand("Mac");
+		laptop4.setHardware(hardware4);
+
+		session.save(laptop1);
+		session.save(laptop2);
+		session.save(laptop3);
+		session.save(laptop4);
+
 	}
 
 	public void cacheDemo() {

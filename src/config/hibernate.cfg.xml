@@ -3,7 +3,7 @@
 <hibernate-configuration>
 	<session-factory>
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+		<property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
 		<property name="connection.url">jdbc:mysql://localhost:3306/hibernate</property>
 		<property name="connection.username">root</property>
 		<property name="connection.password">root</property>
@@ -26,5 +26,9 @@
 		<mapping class="com.hibernate.demo.entity.tpsc.Interior" />
 		<mapping class="com.hibernate.demo.entity.tpsc.Exterior" />
 		<mapping class="com.hibernate.demo.entity.Country" />
+		<mapping resource="hibernate/fruit.hbm.xml" />
+		<mapping resource="hibernate/vegetable.hbm.xml" />
+		<mapping resource="hibernate/password.hbm.xml" />
+		<mapping resource="hibernate/laptop.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

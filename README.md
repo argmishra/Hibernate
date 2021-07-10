@@ -54,3 +54,11 @@ It holds a first-level cache (mandatory) of data. This interface provides method
 5. Table Per Sub Class Mapping
 6. Hibernate Query Languages
 7. Caching
+8. List Mapping
+9. Set Mapping
+10. Map Mapping
+11. Component Mapping
+12. One to One Mapping
+13. One to Many Mapping
+14. Many to One Mapping
+15. Many to Many Mapping

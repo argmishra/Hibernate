@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>  
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 5.5//EN" "http://hibernate.sourceforge.net/hibernate-mapping-5.5.dtd">
+
+<hibernate-mapping>
+	<class name="com.hibernate.demo.entity.collection.Fruit"
+		table="fruits">
+		<id name="id">
+			<generator class="increment"></generator>
+		</id>
+		<property name="name"></property>
+		<list name="locations" table="locations">
+			<key column="id"></key>
+			<index column="type"></index>
+			<element column="location" type="string"></element>
+		</list>
+	</class>
+</hibernate-mapping>
