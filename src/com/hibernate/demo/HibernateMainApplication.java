@@ -43,103 +43,59 @@ public class HibernateMainApplication {
 	public static void main(String[] args) {
 		HibernateMainApplication app = new HibernateMainApplication();
 		app.openConnection();
-		// app.all(app);
+		app.all(app);
 		app.closeConnection();
+		app.secondLevelCacheDemo();
 	}
 
 	public void all(HibernateMainApplication app) {
 		app.saveByXML();
 		app.saveByAnnotation();
+		app.HQLDemo();
+		app.HCQLDemo();
 		app.saveByTablePerHierarchy();
 		app.saveByTablePerConcreteClass();
 		app.saveByTablePerSubClass();
-		app.HQLDemo();
-		app.HCQLDemo();
-		app.cacheDemo();
 		app.collectionDemo();
 		app.componentDemo();
+		app.firstLevelCacheDemo();
 	}
 
 	public void collectionDemo() {
 		// List
-		Fruit fruit1 = new Fruit();
-		fruit1.setName("Mango");
-		fruit1.setLocations(List.of("Mumbai", "Gujrat"));
-		session.save(fruit1);
-
-		Fruit fruit2 = new Fruit();
-		fruit2.setName("Coconut");
-		fruit2.setLocations(List.of("Kerla", "AP"));
-		session.save(fruit2);
+		session.save(Fruit.builder().name("Mango").locations(List.of("Mumbai", "Gujrat")).build());
+		session.save(Fruit.builder().name("Coconut").locations(List.of("Kerla", "AP")).build());
 
 		// Set
-		Vegetable vegetable1 = new Vegetable();
-		vegetable1.setName("Capsicum");
-		vegetable1.setColours(Set.of("Red", "Yellow", "Green"));
-		session.save(vegetable1);
-
-		Vegetable vegetable2 = new Vegetable();
-		vegetable2.setName("Onion");
-		vegetable2.setColours(Set.of("Red", "Green"));
-		session.save(vegetable2);
+		session.save(Vegetable.builder().name("Capsicum").colours(Set.of("Red", "Yellow", "Green")).build());
+		session.save(Vegetable.builder().name("Onion").colours(Set.of("Red", "Green")).build());
 
 		// Map
-		Password password1 = new Password();
-		password1.setWebsite("google");
-		password1.setHint(Map.of("mail", "argmishra.ece@Gmail.com", "number", "1234"));
-		session.save(password1);
+		session.save(Password.builder().website("google")
+				.hint(Map.of("mail", "argmishra.ece@Gmail.com", "number", "1234")).build());
+		session.save(
+				Password.builder().website("facebook").hint(Map.of("user", "argmishra", "number", "1234")).build());
 
-		Password password2 = new Password();
-		password2.setWebsite("facebook");
-		password2.setHint(Map.of("user", "argmishra", "number", "1234"));
-		session.save(password2);
 	}
 
 	public void componentDemo() {
-		// Component
-		Hardware hardware1 = new Hardware();
-		hardware1.setName("CPU");
-		hardware1.setWorking(true);
-
-		Hardware hardware2 = new Hardware();
-		hardware2.setName("RAM");
-		hardware2.setWorking(true);
-
-		Hardware hardware3 = new Hardware();
-		hardware3.setName("RAM");
-		hardware3.setWorking(false);
-
-		Hardware hardware4 = new Hardware();
-		hardware4.setName("Speaker");
-		hardware4.setWorking(false);
-
-		Laptop laptop1 = new Laptop();
-		laptop1.setBrand("HP");
-		laptop1.setHardware(hardware1);
-
-		Laptop laptop2 = new Laptop();
-		laptop2.setBrand("Dell");
-		laptop2.setHardware(hardware2);
-
-		Laptop laptop3 = new Laptop();
-		laptop3.setBrand("Lenovo");
-		laptop3.setHardware(hardware3);
-
-		Laptop laptop4 = new Laptop();
-		laptop4.setBrand("Mac");
-		laptop4.setHardware(hardware4);
-
-		session.save(laptop1);
-		session.save(laptop2);
-		session.save(laptop3);
-		session.save(laptop4);
-
+		session.save(
+				Laptop.builder().brand("HP").hardware(Hardware.builder().name("CPU").working(true).build()).build());
+		session.save(
+				Laptop.builder().brand("Dell").hardware(Hardware.builder().name("RAM").working(true).build()).build());
+		session.save(Laptop.builder().brand("Lenovo").hardware(Hardware.builder().name("RAM").working(false).build())
+				.build());
+		session.save(Laptop.builder().brand("Mac").hardware(Hardware.builder().name("Speaker").working(false).build())
+				.build());
 	}
 
-	public void cacheDemo() {
+	public void firstLevelCacheDemo() {
+		session.save(Country.builder().name("Ireland").population("10000").build());
 		System.out.println("First Time Result = " + getResult(session).getName());
 		System.out.println("First Level Cache Result = " + getResult(session).getName());
+	}
 
+	public void secondLevelCacheDemo() {
 		this.openAnotherConnection();
 		System.out.println("Second Level Cache Result = " + getResult(anotherSession).getName());
 		this.closeAnotherConnection();
@@ -167,13 +123,10 @@ public class HibernateMainApplication {
 	public void saveByTablePerSubClass() {
 		Vehicle vehicle = new Vehicle();
 		vehicle.setModel("Getz");
-		Interior interior1 = Interior.builder().rating("4").model("Swift").build();
-		Interior interior2 = Interior.builder().rating("4.5").model("Honda").build();
-		Exterior exterior = Exterior.builder().rating("3.5").model("Alto").build();
 		session.persist(vehicle);
-		session.persist(interior1);
-		session.persist(exterior);
-		session.persist(interior2);
+		session.persist(Interior.builder().rating("4").model("Swift").build());
+		session.persist(Exterior.builder().rating("3.5").model("Alto").build());
+		session.persist(Interior.builder().rating("4.5").model("Honda").build());
 	}
 
 	public void saveByTablePerConcreteClass() {
@@ -195,24 +148,17 @@ public class HibernateMainApplication {
 	public void saveByTablePerHierarchy() {
 		TotalSalary totalSalary = new TotalSalary();
 		totalSalary.setName("Sonu");
-		BasicSalary basicSalary = BasicSalary.builder().amount(15000L).medical(true).build();
-		BonusSalary bonusSalary = BonusSalary.builder().tax("20").travel(false).build();
 		session.persist(totalSalary);
-		session.persist(basicSalary);
-		session.persist(bonusSalary);
+		session.persist(BasicSalary.builder().amount(15000L).medical(true).build());
+		session.persist(BonusSalary.builder().tax("20").travel(false).build());
 	}
 
 	public void saveByXML() {
-		Employee employee = Employee.builder().firstName("Anurag").lastName("Mishra").build();
-		session.save(employee);
+		session.save(Employee.builder().firstName("Anurag").lastName("Mishra").build());
 	}
 
 	public void saveByAnnotation() {
-		User user = User.builder().firstName("Optimus").lastName("Prime").build();
-		session.save(user);
-
-		Country country = Country.builder().name("Ireland").population("10000").build();
-		session.save(country);
+		session.save(User.builder().firstName("Optimus").lastName("Prime").build());
 	}
 
 	public void openConnection() {
@@ -226,7 +172,6 @@ public class HibernateMainApplication {
 	public void closeConnection() {
 		transaction.commit();
 		session.close();
-		factory.close();
 	}
 
 	public void openAnotherConnection() {
@@ -237,6 +182,7 @@ public class HibernateMainApplication {
 	public void closeAnotherConnection() {
 		anotherTransaction.commit();
 		anotherSession.close();
+		factory.close();
 	}
 
 }
