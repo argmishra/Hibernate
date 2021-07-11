@@ -22,6 +22,10 @@ import com.hibernate.demo.entity.collection.Password;
 import com.hibernate.demo.entity.collection.Vegetable;
 import com.hibernate.demo.entity.component.Hardware;
 import com.hibernate.demo.entity.component.Laptop;
+import com.hibernate.demo.entity.mappings.Mobile;
+import com.hibernate.demo.entity.mappings.Number;
+import com.hibernate.demo.entity.mappings.Office;
+import com.hibernate.demo.entity.mappings.Software;
 import com.hibernate.demo.entity.tpcc.Bollywood;
 import com.hibernate.demo.entity.tpcc.Hollywood;
 import com.hibernate.demo.entity.tpcc.Movie;
@@ -43,9 +47,11 @@ public class HibernateMainApplication {
 	public static void main(String[] args) {
 		HibernateMainApplication app = new HibernateMainApplication();
 		app.openConnection();
-		app.all(app);
+		// app.all(app);
+		app.oneToManyMapping();
+		app.oneToOneMapping();
 		app.closeConnection();
-		app.secondLevelCacheDemo();
+		// app.secondLevelCacheDemo();
 	}
 
 	public void all(HibernateMainApplication app) {
@@ -59,6 +65,37 @@ public class HibernateMainApplication {
 		app.collectionDemo();
 		app.componentDemo();
 		app.firstLevelCacheDemo();
+	}
+
+	public void oneToManyMapping() {
+		session.save(Office.builder().email("a@gmail.com")
+				.numbers(Set.of(Number.builder().type("mobile").build(), Number.builder().type("phone").build()))
+				.build());
+		session.save(
+				Office.builder().email("b@gmail.com").numbers(Set.of(Number.builder().type("fax").build())).build());
+
+		session.createQuery("from Office").list().forEach(result -> {
+			System.out.println("Office = " + result);
+		});
+
+		session.createQuery("from Number").list().forEach(result -> {
+			System.out.println("Number = " + result);
+		});
+	}
+
+	public void oneToOneMapping() {
+		Software software = Software.builder().ram("2.3GB").version(3).build();
+		session.save(software);
+		session.save(Mobile.builder().name("Iphone").software(software).build());
+
+		session.createQuery("from Mobile").list().forEach(result -> {
+			System.out.println("Mobile = " + result);
+		});
+
+		session.createQuery("from Software").list().forEach(result -> {
+			System.out.println("Software = " + result);
+		});
+
 	}
 
 	public void collectionDemo() {

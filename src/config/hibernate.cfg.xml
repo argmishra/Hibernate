@@ -14,7 +14,7 @@
 		<property name="hibernate.cache.use_query_cache">true</property>
 		<property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
 
-		<mapping class="com.hibernate.demo.entity.Country" />
+	<!-- 	<mapping class="com.hibernate.demo.entity.Country" />
 		<mapping resource="hibernate/employee.hbm.xml" />
 		<mapping class="com.hibernate.demo.entity.User" />
 		<mapping class="com.hibernate.demo.entity.tph.TotalSalary" />
@@ -29,6 +29,12 @@
 		<mapping resource="hibernate/fruit.hbm.xml" />
 		<mapping resource="hibernate/vegetable.hbm.xml" />
 		<mapping resource="hibernate/password.hbm.xml" />
-		<mapping resource="hibernate/laptop.hbm.xml" />
+		<mapping resource="hibernate/laptop.hbm.xml" /> -->
+		<mapping class="com.hibernate.demo.entity.mappings.Mobile" />
+		<mapping class="com.hibernate.demo.entity.mappings.Number" />
+		<mapping class="com.hibernate.demo.entity.mappings.Office" />
+		<mapping class="com.hibernate.demo.entity.mappings.Software" />
+
+
 	</session-factory>
 </hibernate-configuration>
