@@ -22,10 +22,14 @@ import com.hibernate.demo.entity.collection.Password;
 import com.hibernate.demo.entity.collection.Vegetable;
 import com.hibernate.demo.entity.component.Hardware;
 import com.hibernate.demo.entity.component.Laptop;
+import com.hibernate.demo.entity.mappings.Car;
+import com.hibernate.demo.entity.mappings.Customer;
 import com.hibernate.demo.entity.mappings.Mobile;
 import com.hibernate.demo.entity.mappings.Number;
 import com.hibernate.demo.entity.mappings.Office;
+import com.hibernate.demo.entity.mappings.Reader;
 import com.hibernate.demo.entity.mappings.Software;
+import com.hibernate.demo.entity.mappings.Subscription;
 import com.hibernate.demo.entity.tpcc.Bollywood;
 import com.hibernate.demo.entity.tpcc.Hollywood;
 import com.hibernate.demo.entity.tpcc.Movie;
@@ -47,11 +51,9 @@ public class HibernateMainApplication {
 	public static void main(String[] args) {
 		HibernateMainApplication app = new HibernateMainApplication();
 		app.openConnection();
-		// app.all(app);
-		app.oneToManyMapping();
-		app.oneToOneMapping();
+		app.all(app);
 		app.closeConnection();
-		// app.secondLevelCacheDemo();
+		app.secondLevelCacheDemo();
 	}
 
 	public void all(HibernateMainApplication app) {
@@ -65,6 +67,41 @@ public class HibernateMainApplication {
 		app.collectionDemo();
 		app.componentDemo();
 		app.firstLevelCacheDemo();
+		app.oneToManyMapping();
+		app.oneToOneMapping();
+		app.manyToOneMapping();
+		app.manyToManyMapping();
+	}
+
+	public void manyToOneMapping() {
+		Customer customer = Customer.builder().userName("Anu").build();
+		session.save(Car.builder().customer(customer).vehicleName("Getz").build());
+		session.save(Car.builder().customer(customer).vehicleName("Dezire").build());
+		session.save(customer);
+
+		session.createQuery("from Customer").list().forEach(result -> {
+			System.out.println("Customer = " + result);
+		});
+
+		session.createQuery("from Car").list().forEach(result -> {
+			System.out.println("Car = " + result);
+		});
+	}
+
+	public void manyToManyMapping() {
+		Subscription subOne = Subscription.builder().subscriptionName("Entertainment").build();
+		Subscription subTwo = Subscription.builder().subscriptionName("Horror").build();
+
+		session.save(Reader.builder().firstName("Anu").subscriptions(Set.of(subOne, subTwo)).build());
+		session.save(Reader.builder().firstName("Dipu").subscriptions(Set.of(subOne, subTwo)).build());
+
+		session.createQuery("from Subscription").list().forEach(result -> {
+			System.out.println("Subscription = " + result);
+		});
+
+		session.createQuery("from Reader").list().forEach(result -> {
+			System.out.println("Reader = " + result);
+		});
 	}
 
 	public void oneToManyMapping() {
@@ -95,7 +132,6 @@ public class HibernateMainApplication {
 		session.createQuery("from Software").list().forEach(result -> {
 			System.out.println("Software = " + result);
 		});
-
 	}
 
 	public void collectionDemo() {
@@ -112,7 +148,6 @@ public class HibernateMainApplication {
 				.hint(Map.of("mail", "argmishra.ece@Gmail.com", "number", "1234")).build());
 		session.save(
 				Password.builder().website("facebook").hint(Map.of("user", "argmishra", "number", "1234")).build());
-
 	}
 
 	public void componentDemo() {
